@@ -1,7 +1,9 @@
 {
   "name": "devcamper-mern-tailwind",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Educational portral with backend developed using NodeJs and MongoDB",
+  "author": "Chinh Do @doinby",
   "type": "module",
   "scripts": {
     "dev": "vite",
