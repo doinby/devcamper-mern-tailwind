@@ -11,6 +11,11 @@ dotenv.config({ path: './config/config.env' });
 // Express App
 const app = express();
 
+// Morgan logging middleware
+if (process.env.MODE_ENV === 'development') {
+	app.use(morgan('dev'));
+}
+
 // Mount Routers
 app.use('/api/v1/bootcamps', bootcamps);
 
