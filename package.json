@@ -4,13 +4,16 @@
   "version": "1.0.0",
   "description": "Educational portral with backend developed using NodeJs and MongoDB",
   "author": "Chinh Do @doinby",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev-fe": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "MODE_ENV=production node server",
+    "dev-be": "nodemon server.js"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -19,6 +22,7 @@
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
+    "nodemon": "^2.0.22",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.1",
     "typescript": "^4.9.3",
