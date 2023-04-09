@@ -1,3 +1,5 @@
+const Bootcamp = require('../models/Bootcamp');
+
 // Add description to each middleware function is helpful
 // in order to identify its purpose
 
@@ -18,8 +20,21 @@ exports.getBootcamp = (req, res, next) => {
 // Desc:    Create New Bootcamp
 // Route:   POST /api/v1/bootcamps/
 // Access:  Private
-exports.createBootcamp = (req, res, next) => {
-	res.status(200).json({ success: true, msg: 'Create a New Bootcamp' });
+exports.createBootcamp = async (req, res, next) => {
+	try {
+		// Insert model into database
+		const bootcamp = await Bootcamp.create(req.body);
+
+		// The HTTP 201 Created success status response code
+		// indicates that the request has succeeded and has
+		// led to the creation of a resource
+		res.status(201).json({
+			success: true,
+			data: bootcamp,
+		});
+	} catch (err) {
+		res.status(400).json({ success: false });
+	}
 };
 
 // Desc:    Update a Bootcamp
