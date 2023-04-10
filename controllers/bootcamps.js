@@ -24,9 +24,8 @@ exports.getBootcamps = async (req, res, next) => {
 // Route:   GET /api/v1/bootcamps/:id
 // Access:  Public
 exports.getBootcamp = async (req, res, next) => {
-	const bootcampId = req.params.id;
-
 	try {
+		const bootcampId = req.params.id;
 		const bootcamp = await Bootcamp.findById(bootcampId);
 
 		// If ID not found, return error
@@ -34,7 +33,7 @@ exports.getBootcamp = async (req, res, next) => {
 			? next(new ErrorResponse(`Cannot find Bootcamp with ID ${bootcampId}`, 404))
 			: res.status(200).json({ success: true, data: bootcamp });
 	} catch (err) {
-		next(new ErrorResponse(`Cannot find Bootcamp with ID ${bootcampId}`, 404));
+		next(err);
 	}
 };
 
