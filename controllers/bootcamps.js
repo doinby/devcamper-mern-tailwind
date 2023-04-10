@@ -6,15 +6,28 @@ const Bootcamp = require('../models/Bootcamp');
 // Desc:    Get All Bootcamps
 // Route:   GET /api/v1/bootcamps
 // Access:  Public
-exports.getBootcamps = (req, res, next) => {
-	res.status(200).json({ success: true, msg: 'Show All Bootcamps' });
+exports.getBootcamps = async (req, res, next) => {
+	try {
+		const bootcamps = await Bootcamp.find();
+
+		res.status(200).json({ success: true, data: bootcamps });
+	} catch (error) {
+		res.status(400).json({ success: false });
+	}
 };
 
 // Desc:    Get a Bootcamp
 // Route:   GET /api/v1/bootcamps/:id
 // Access:  Public
 exports.getBootcamp = (req, res, next) => {
-	res.status(200).json({ success: true, msg: `Show Bootcamp ${req.params.id}` });
+	try {
+		const bootcampId = req.params.id;
+		const bootcamp = Bootcamp.find(bootcampId);
+
+		res.status(200).json({ success: true, data: bootcamp });
+	} catch (err) {
+		res.status(400).json({ success: false });
+	}
 };
 
 // Desc:    Create New Bootcamp
