@@ -19,7 +19,7 @@ exports.getBootcamps = async (req, res, next) => {
 	}
 };
 
-// Desc:    Get a Bootcamp
+// Desc:    Get a Bootcamp by ID
 // Route:   GET /api/v1/bootcamps/:id
 // Access:  Public
 exports.getBootcamp = async (req, res, next) => {
@@ -32,7 +32,7 @@ exports.getBootcamp = async (req, res, next) => {
 			? res.status(400).json({ success: false })
 			: res.status(200).json({ success: true, data: bootcamp });
 	} catch (err) {
-		res.status(400).json({ success: false });
+		next(err);
 	}
 };
 
@@ -56,7 +56,7 @@ exports.createBootcamp = async (req, res, next) => {
 	}
 };
 
-// Desc:    Update a Bootcamp
+// Desc:    Update a Bootcamp by ID
 // Route:   PUT /api/v1/bootcamps/:id
 // Access:  Private
 exports.updateBootcamp = async (req, res, next) => {
@@ -76,7 +76,7 @@ exports.updateBootcamp = async (req, res, next) => {
 	}
 };
 
-// Desc:    Delete a Bootcamp
+// Desc:    Delete a Bootcamp by ID
 // Route:   DELETE /api/v1/bootcamps/:id
 // Access:  Private
 exports.deleteBootcamp = async (req, res, next) => {
