@@ -1,5 +1,6 @@
-const Bootcamp = require('../models/Bootcamp');
 const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
+const Bootcamp = require('../models/Bootcamp');
 
 // Add description to each middleware function is helpful
 // in order to identify its purpose
@@ -7,89 +8,74 @@ const ErrorResponse = require('../utils/errorResponse');
 // Desc:    Get All Bootcamps
 // Route:   GET /api/v1/bootcamps
 // Access:  Public
-exports.getBootcamps = async (req, res, next) => {
-	try {
-		const bootcamps = await Bootcamp.find();
-		const bootcampsCount = bootcamps.length;
+exports.getBootcamps = asyncHandler(async (req, res, next) => {
+   const bootcamps = await Bootcamp.find();
+   const bootcampsCount = bootcamps.length;
 
-		res
-			.status(200)
-			.json({ success: true, count: bootcampsCount, data: bootcamps });
-	} catch (error) {
-		res.status(400).json({ success: false });
-	}
-};
+   res.status(200).json({
+      success: true,
+      count: bootcampsCount,
+      data: bootcamps
+   });
+});
 
 // Desc:    Get a Bootcamp by ID
 // Route:   GET /api/v1/bootcamps/:id
 // Access:  Public
-exports.getBootcamp = async (req, res, next) => {
-	try {
-		const bootcampId = req.params.id;
-		const bootcamp = await Bootcamp.findById(bootcampId);
+exports.getBootcamp = asyncHandler(async (req, res, next) => {
+   const bootcampId = req.params.id;
+   const bootcamp = await Bootcamp.findById(bootcampId);
 
-		// If ID not found, return error
-		!bootcamp
-			? next(new ErrorResponse(`Cannot find Bootcamp with ID ${bootcampId}`, 404))
-			: res.status(200).json({ success: true, data: bootcamp });
-	} catch (err) {
-		next(err);
-	}
-};
+   // If ID not found, return error
+   !bootcamp
+      ? next(
+           new ErrorResponse(`Cannot find Bootcamp with ID ${bootcampId}`, 404)
+        )
+      : res.status(200).json({success: true, data: bootcamp});
+   next(err);
+});
 
 // Desc:    Create New Bootcamp
 // Route:   POST /api/v1/bootcamps/
 // Access:  Private
-exports.createBootcamp = async (req, res, next) => {
-	try {
-		// Insert model into database
-		const bootcamp = await Bootcamp.create(req.body);
+exports.createBootcamp = asyncHandler(async (req, res, next) => {
+   // Insert model into database
+   const bootcamp = await Bootcamp.create(req.body);
 
-		// The HTTP 201 Created success status response code
-		// indicates that the request has succeeded and has
-		// led to the creation of a resource
-		res.status(201).json({
-			success: true,
-			data: bootcamp,
-		});
-	} catch (err) {
-		next(err);
-	}
-};
+   // The HTTP 201 Created success status response code
+   // indicates that the request has succeeded and has
+   // led to the creation of a resource
+   res.status(201).json({
+      success: true,
+      data: bootcamp
+   });
+});
 
 // Desc:    Update a Bootcamp by ID
 // Route:   PUT /api/v1/bootcamps/:id
 // Access:  Private
-exports.updateBootcamp = async (req, res, next) => {
-	try {
-		const bootcampId = req.params.id;
-		const bootcamp = await Bootcamp.findByIdAndUpdate(bootcampId, req.body, {
-			new: true,
-			runValidators: true,
-		});
+exports.updateBootcamp = asyncHandler(async (req, res, next) => {
+   const bootcampId = req.params.id;
+   const bootcamp = await Bootcamp.findByIdAndUpdate(bootcampId, req.body, {
+      new: true,
+      runValidators: true
+   });
 
-		// If ID not found, return error
-		!bootcamp
-			? res.status(400).json({ success: false })
-			: res.status(200).json({ success: true, data: bootcamp });
-	} catch (err) {
-		res.status(400).json({ success: false });
-	}
-};
+   // If ID not found, return error
+   !bootcamp
+      ? res.status(400).json({success: false})
+      : res.status(200).json({success: true, data: bootcamp});
+});
 
 // Desc:    Delete a Bootcamp by ID
 // Route:   DELETE /api/v1/bootcamps/:id
 // Access:  Private
-exports.deleteBootcamp = async (req, res, next) => {
-	try {
-		const bootcampId = req.params.id;
-		const bootcamp = await Bootcamp.findByIdAndDelete(bootcampId);
+exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
+   const bootcampId = req.params.id;
+   const bootcamp = await Bootcamp.findByIdAndDelete(bootcampId);
 
-		// If ID not found, return error
-		!bootcamp
-			? res.status(400).json({ success: false })
-			: res.status(200).json({ success: true, data: {} });
-	} catch (err) {
-		res.status(400).json({ success: false });
-	}
-};
+   // If ID not found, return error
+   !bootcamp
+      ? res.status(400).json({success: false})
+      : res.status(200).json({success: true, data: {}});
+});
