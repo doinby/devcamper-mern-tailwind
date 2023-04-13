@@ -9,13 +9,14 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "start": "MODE_ENV=production node server",
-    "dev-be": "nodemon server.js"
+    "dev-be": "nodemon server"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^7.0.3",
     "morgan": "^1.10.0",
+    "node-geocoder": "^4.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "slugify": "^1.6.6"
