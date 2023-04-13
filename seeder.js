@@ -41,6 +41,9 @@ const deleteData = async () => {
    }
 };
 
+// Execute import/delete functions when run command
+// node seeder -i (or -d)
+
 if (process.argv[2] === '-i') {
    importData();
 } else if (process.argv[2] === '-d') {
