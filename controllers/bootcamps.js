@@ -9,7 +9,19 @@ const Bootcamp = require('../models/Bootcamp');
 // Route:   GET /api/v1/bootcamps
 // Access:  Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-   const bootcamps = await Bootcamp.find();
+   let queryStr = JSON.stringify(req.query);
+
+   // Look for keywords "gt", "gte", etc.
+   // and return a string with "$" at the front
+   queryStr = queryStr.replace(
+      /\b(gt|gte|lt|lte|in)\b/g,
+      (match) => `$${match}`
+   );
+
+   // Convert query back to object
+   const query = Bootcamp.find(JSON.parse(queryStr));
+   const bootcamps = await query;
+
    const bootcampsCount = bootcamps.length;
 
    res.status(200).json({
