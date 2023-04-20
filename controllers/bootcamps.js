@@ -9,17 +9,50 @@ const Bootcamp = require('../models/Bootcamp');
 // Route:   GET /api/v1/bootcamps
 // Access:  Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-   let queryStr = JSON.stringify(req.query);
+   let query;
 
-   // Look for keywords "gt", "gte", etc.
-   // and return a string with "$" at the front
+   const selectQuery = req.query.select;
+   const hasSelectQuery = selectQuery ? true : false;
+   const sortQuery = req.query.sort;
+   const hasSortQuery = sortQuery ? true : false;
+
+   // Create a copy of request query
+   const reqQuery = { ...req.query };
+
+   // Create fields to exclude
+   const removeFields = ['select', 'sort'];
+
+   // Loop over removeFields and delete them from reqQuery
+   removeFields.forEach((param) => delete reqQuery[param]);
+
+   // Create query string
+   let queryStr = JSON.stringify(reqQuery);
+
+   // Create Mongoose operator by look for keywords
+   // "gt", "gte", etc., and return a string with
+   // "$" at the front
    queryStr = queryStr.replace(
       /\b(gt|gte|lt|lte|in)\b/g,
       (match) => `$${match}`
    );
 
-   // Convert query back to object
-   const query = Bootcamp.find(JSON.parse(queryStr));
+   // Convert query back to object and find resource
+   // from MongoDB database
+   query = Bootcamp.find(JSON.parse(queryStr));
+
+   // Select fields
+   if (hasSelectQuery) {
+      const fields = selectQuery.split(',').join(' ');
+      query = query.select(fields);
+   }
+
+   // Sort results
+   if (hasSortQuery) {
+      const sortBy = sortQuery.split(',').join(' ');
+      query = query.sort(sortBy);
+   } else query = query.sort('-createdAt');
+
+   // Execute query
    const bootcamps = await query;
 
    const bootcampsCount = bootcamps.length;
